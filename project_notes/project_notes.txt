@@ -1,0 +1,83 @@
+* variables in .env file in Vite project have to start with 'VITE_'
+
+
+// Component Render ---------------------------------------------------------------------
+
+ - A React Component re-Render when: 
+      + State changes
+      + Context changes
+      + Parent or child re-Render
+      + Hook changes
+
+-----------------------------------------------------------------------------------------
+
+// Context Provider ---------------------------------------------------------------------
+
+ - Context provider is used to provide context to the components as required
+ - which is the advantage to 'pros' that pass context or data to its child components only,
+   to its component flow. 
+
+   + The way of "Props" 
+        - cannot pass content to another component unless it's not children
+        - cannot pass back to parent 
+
+* refer to 'ContextProvider_Ex.jsx' for demostration of context provider. 
+-------------------------------------------------------------------------------------------
+
+//*** Hook - useMemo() -----------------------------------------------------------------------
+
+  > How it work:
+      - Once the component renders as the first time, 'useMemo' run the assigned work for the 
+      first and last time, until its dependency (dependency array) data changed
+
+      - the data from the first run is stored in the useMemo, so the component will use the same 
+      previously processed data, no matter how many times the component re-render
+
+      - It will re-run for once whenever the dependency array changed
+
+
+  > How it's used:
+      - Since it only run for the first time, it can be used to run some work that must not 
+      run again and again
+
+      - For example, it can be used for data fetching: the data will fetch only once, it doen't 
+      require to fetch the same data every time component re-render
+
+*Refer to 'UseMemo_Ex.jsx'
+-------------------------------------------------------------------------------------------
+
+
+// Material UI -----------------------------------------------------------------------------
+
+  *- install MUI
+    > npm install @mui/material @emotion/react @emotion/styled
+
+  - install MUI fonts along with 'Roboto'
+    > npm install @mui/icons-material @fontsource/roboto
+
+--------------------------------------------------------------------------------------------
+
+-------------------- Data Fetching in React -------------------------------
+
+* Data Fetching through "React Router" ------------------------------------
+
+const router = createBrowserRouter ([
+    {
+        path: "/",
+        loader : async () => {
+            // fetch and return data
+        },
+        element: <Home/>
+    }
+])
+
+function Home () {
+    const data = useLoaderData();
+    // ...
+}
+
+* React Query ---------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------
+
