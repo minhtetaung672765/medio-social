@@ -21,6 +21,7 @@ import Register from "./pages/Register";
 import Likes from "./pages/Likes";
 import Profile from "./pages/Profile";
 import Comments from "./pages/Comments";
+import Search from "./pages/Search";
 
 import { useEffect } from "react";
 import { fetchVerify } from "./libs/fetcher";
@@ -60,9 +61,13 @@ const router = createBrowserRouter([
                 element: <Profile />,
             },
             {
-                path: "/likes/:id",
+                path: "/likes/:id/:type",
                 element: <Likes />,
             },
+            {
+                path: "/search",
+                element: <Search />,
+            }
         ],
     },
 ]);

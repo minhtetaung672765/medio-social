@@ -6,11 +6,14 @@ import {
     Menu as MenuIcon,
     Add as AddIcon,
     LightMode as LightModeIcon,
-    DarkMode as DarkModeIcon
+    DarkMode as DarkModeIcon,
+    Search as SearchIcon
 } from "@mui/icons-material";
 
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+    const navigate = useNavigate();
     const { showForm, setShowForm, mode, setMode } = useApp();
 
     // custom added to drawer - CATD
@@ -34,6 +37,11 @@ export default function Header() {
                         color="inherit"
                         onClick={() => setShowForm(!showForm)}>
                         <AddIcon />
+                    </IconButton>
+                    <IconButton
+                        color="inherit"
+                        onClick={() => navigate("/search")}>
+                        <SearchIcon />
                     </IconButton>
 
                     {/* Use button UI according to mode */}
