@@ -80,7 +80,6 @@ const router = createBrowserRouter([
     },
 ]);
 
-
 export default function ThemedApp() {
     const [showDrawer, setShowDrawer] = useState(false);
     const [showForm, setShowForm] = useState(false);
