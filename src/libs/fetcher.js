@@ -69,6 +69,17 @@ export async function postPost(content) {
     throw new Error("Error: Check Network Log");
 }
 
+export async function deletePost(id) {
+    const token = getToken();
+    const res = await fetch(`${api}/content/posts/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
+
 export async function postComment(content, postId) {
     const token = getToken();
     const res = await fetch(`${api}/content/comments`, {
@@ -83,6 +94,17 @@ export async function postComment(content, postId) {
         return res.json();
     }
     throw new Error("Error: Check Network Log");
+}
+
+export async function deleteComment(id) {
+    const token = getToken();
+    const res = await fetch(`${api}/content/comments/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
 }
 
 export async function postPostLike(id) {
@@ -174,6 +196,38 @@ export async function fetchPosts() {
 export async function fetchFollowingPosts() {
     const token = getToken();
     const res = await fetch(`${api}/content/following/posts`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
+
+export async function fetchNotis() {
+    const token = getToken();
+    const res = await fetch(`${api}/content/notis`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
+
+export async function putAllNotisRead() {
+    const token = getToken();
+    const res = await fetch(`${api}/content/notis/read`, {
+        method: "PUT",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return res.json();
+}
+
+export async function putNotiRead(id) {
+    const token = getToken();
+    const res = await fetch(`${api}/content/notis/read/${id}`, {
+        method: "PUT",
         headers: {
             Authorization: `Bearer ${token}`,
         },

@@ -8,7 +8,7 @@ import { useQuery, useMutation } from "react-query";
 import { queryClient } from "../ThemedApp";
 import { useApp } from "../ThemedApp";
 
-import { postComment } from "../libs/fetcher";
+import { postComment, deleteComment, deletePost } from "../libs/fetcher";
 
 const api = import.meta.env.VITE_API;
 
@@ -26,20 +26,22 @@ export default function Comments() {
         }
     );
 
-    const removePost = useMutation(async id => {
-        await fetch(`${api}/content/posts/${id}`, {
-            method: "DELETE",
-        });
+    const removePost = useMutation(id => {
+        // await fetch(`${api}/content/posts/${id}`, {
+        //     method: "DELETE",
+        // });
+        deletePost(id);
+
         navigate("/");
         setGlobalMsg("A post deleted");
     });
 
-    const removeComment = useMutation(
-        async id => {
-            await fetch(`${api}/content/comments/${id}`, {
-                method: "DELETE",
-            });
-        },
+    const removeComment = useMutation(id => deleteComment(id),
+        // async id => {
+        //     await fetch(`${api}/content/comments/${id}`, {
+        //         method: "DELETE",
+        //     });
+        // },
         {
             onMutate: id => {
                 queryClient.cancelQueries("comments");

@@ -6,7 +6,7 @@ import { useApp } from "../ThemedApp";
 import { useQuery, useMutation } from "react-query";
 import { queryClient } from "../ThemedApp";
 import {
-
+    deletePost,
     fetchPosts,
     postPost,
     fetchFollowingPosts,
@@ -24,21 +24,21 @@ export default function Home() {
     );
 
     // this remove function is currently unavailable - due to no fun in fetcher.js
-    // const remove = useMutation(async id => deletePost(id), {
-    //     onMutate: async id => {
-    //         await queryClient.cancelQueries("posts");
-    //         await queryClient.setQueryData(["posts", showLatest], old =>
-    //             old.filter(item => item.id !== id)
-    //         );
-    //         setGlobalMsg("A post deleted");
-    //     },
-    // });
+    const remove = useMutation(async id => deletePost(id), {
+        onMutate: async id => {
+            await queryClient.cancelQueries("posts");
+            await queryClient.setQueryData(["posts", showLatest], old =>
+                old.filter(item => item.id !== id)
+            );
+            setGlobalMsg("A post deleted");
+        },
+    });
 
     // temp remove function
-    const remove = () => {
-        return null;
-        console.log("This remove function is currently empty.")
-    }
+    // const remove = (id) => {
+    //     console.log("This remove function is currently empty.")
+    //     return null;
+    // }
 
     const add = useMutation(content => postPost(content), {
         onSuccess: async post => {
@@ -94,7 +94,7 @@ export default function Home() {
                     <Item
                         key={item.id}
                         item={item}
-                        remove={remove}
+                        remove={remove.mutate}
                     />
                 );
             })}

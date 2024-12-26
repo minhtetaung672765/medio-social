@@ -3,23 +3,56 @@ import { Box, Card, CardContent, Typography, IconButton } from "@mui/material";
 import {
     Alarm as TimeIcon,
     AccountCircle as UserIcon,
-    Delete as DeleteIcon
+    Delete as DeleteIcon,
+    Iso
 } from "@mui/icons-material";
 
 import { green } from "@mui/material/colors";
 
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 
 import { formatRelative } from "date-fns";
 
 import LikeButton from "./LikeButton";
 import CommentButton from "./CommentButton";
+import { useApp } from "../ThemedApp";
+import { useQuery, useMutation } from "react-query";
+
+const api = import.meta.env.VITE_API;
 
 export default function Item({ item, remove, primary, comment }) {
-    // 'item' property is taken as a property object
-    // 'remove' property is taken as a function
 
     const navigate = useNavigate();
+    const { auth } = useApp();
+
+    // query for fetching the post item
+    const { error, data } = useQuery(
+        // fetch query whenever item.postId and comment status changes
+        ["current_post", item.postId, comment], // Include dependencies
+        async () => {
+            if (!comment) return null; // Exit early if no comment
+            const id = item.postId;
+            const res = await fetch(`${api}/content/posts/${id}`);
+            return res.json();
+        },
+        {
+            enabled: !!comment && !!item.postId, // Prevent query if dependencies are missing
+        }
+    );
+
+    // for displaying owner previlleged components like 'delete button'
+    const isOwner = () => {
+        // if logged in user and item owner are the same
+        if (auth && Number(auth.id) === Number(item.userId)) {
+            return true;
+        }
+        // if the item is comment
+        // if the logged in user and post owner are the same (post owner can delete every com)
+        if (comment && auth && data && Number(auth.id) === Number(data.userId)) {
+            return true;
+        }
+        return false;
+    };
 
     return (
         <Card sx={{ mb: 2 }}>
@@ -50,7 +83,7 @@ export default function Item({ item, remove, primary, comment }) {
                             {formatRelative(item.created, new Date())}
                         </Typography>
                     </Box>
-                    <IconButton
+                    {isOwner() ? (<IconButton
                         size="small"
                         // 
                         // "stopPropagation" make continuous events unimpacted 
@@ -63,6 +96,7 @@ export default function Item({ item, remove, primary, comment }) {
                         }}>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
+                    ) : <></>}
                 </Box>
 
                 <Typography sx={{ my: 3 }}>{item.content}</Typography>

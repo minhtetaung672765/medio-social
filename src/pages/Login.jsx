@@ -40,7 +40,7 @@ export default function Login() {
         }
     );
     const navigate = useNavigate();
-    const { setAuth } = useApp();
+    const { setAuth, auth } = useApp();
 
     return (
         <Box>
